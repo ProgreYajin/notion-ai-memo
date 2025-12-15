@@ -1,8 +1,6 @@
 name: Notion Auto Process
 
 on:
-  schedule:
-    - cron: "*/5 * * * *"
   workflow_dispatch:
 
 jobs:
