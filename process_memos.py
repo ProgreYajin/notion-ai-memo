@@ -6,7 +6,7 @@ from openai import OpenAI
 notion = Client(auth=os.environ["NOTION_TOKEN"])
 client = OpenAI(api_key=os.environ["OPENAI_API_KEY"])
 
-DATABASE_ID = "あなたのNotion DB ID"
+DATABASE_ID = "2bef6e540e8780e1a3abf3cb45886fc9"
 
 # ① Notionにアクセスできるか
 db = notion.databases.retrieve(database_id=DATABASE_ID)
