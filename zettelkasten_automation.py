@@ -32,7 +32,17 @@ class ZettelkastenAutomation:
         self.github = Github(github_token)
         self.database_id = database_id
         self.repo = self.github.get_repo(repo_name)
-        self.log_file = log_file
+        
+        # --- 修正箇所：logsフォルダへのパス設定 ---
+        log_dir = "logs"
+        # logsフォルダがなければ作成する
+        if not os.path.exists(log_dir):
+            os.makedirs(log_dir)
+            print(f"📁 フォルダを作成しました: {log_dir}")
+            
+        # フォルダ名とファイル名を結合する
+        self.log_file = os.path.join(log_dir, log_file)
+        # ---------------------------------------
         
         # 全ページのキャッシュ（関連メモ検索用）
         self.all_pages_cache = []
@@ -471,12 +481,17 @@ tags: [{', '.join([f'#{tag}' for tag in tags])}]
             analysis['tags'],
             related_pages
         )
-        
+
+        # --- 修正箇所：保存先フォルダ名の変更 ---
+        target_dir = "zettelkasten-vault" # フォルダ名をここで指定
+
         # GitHubに保存
         safe_title = analysis['title'].replace('/', '-').replace('\\', '-')[:50]
         # ファイル名に使えない文字を削除
         safe_title = ''.join(c for c in safe_title if c.isalnum() or c in (' ', '-', '_'))
-        filename = f"zettelkasten/{page['created_time'][:10]}_{safe_title}.md"
+        
+        # フォルダ名を zettelkasten から zettelkasten-vault に変更
+        filename = f"{target_dir}/{page['created_time'][:10]}_{safe_title}.md"
         
         self.save_to_github(
             filename,
