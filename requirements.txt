@@ -2,3 +2,4 @@ notion-client==2.2.1
 openai==1.54.0
 PyGithub==2.1.1
 python-dotenv==1.0.0
+numpy
