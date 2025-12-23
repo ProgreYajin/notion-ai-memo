@@ -1,0 +1,33 @@
+name: Auto Process Zettelkasten
+
+on:
+  schedule:
+    - cron: '0 2 * * *'  # 毎日午前2時(UTC)に実行
+  workflow_dispatch:  # 手動実行も可能
+
+jobs:
+  process:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+      
+      - name: Run automation
+        env:
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN_PERSONAL }}
+          NOTION_DATABASE_ID: ${{ secrets.NOTION_DATABASE_ID }}
+          GITHUB_REPO: ${{ github.repository }}
+        run: |
+          python zettelkasten_automation.py
