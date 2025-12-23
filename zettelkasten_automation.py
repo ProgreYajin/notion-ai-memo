@@ -15,7 +15,8 @@ class ZettelkastenAutomation:
     """Zettelkastenメモの自動化システム（改良版）"""
     
     def __init__(self, notion_token: str, openai_api_key: str, github_token: str, 
-                 database_id: str, repo_name: str, log_file: str = "processing_log.json"):
+             database_id: str, repo_name: str, log_file: str = "processing_log.json",
+             local_vault_path: str = None):
         """
         初期化
         
@@ -49,6 +50,8 @@ class ZettelkastenAutomation:
         
         # 処理ログを読み込み
         self.processing_log = self._load_log()
+
+        self.local_vault_path = local_vault_path # 追加
         
     def _load_log(self) -> Dict:
         """処理ログを読み込み"""
@@ -495,6 +498,25 @@ date: {created_time}{yaml_tags}
 
         # GitHubに保存
         safe_title = analysis['title'].replace('/', '-').replace('\\', '-')[:50]
+
+        # --- 💡 追加：iCloudフォルダ（ローカル）にも保存する ---
+        if self.local_vault_path:
+            # フォルダパスを作成 (zettelkasten-vault 部分)
+            local_dir = os.path.join(self.local_vault_path, target_dir)
+            if not os.path.exists(local_dir):
+                os.makedirs(local_dir)
+            
+            # ファイルのフルパスを作成
+            local_file_path = os.path.join(self.local_vault_path, filename)
+            
+            # ディレクトリが存在しない場合は作成
+            os.makedirs(os.path.dirname(local_file_path), exist_ok=True)
+            
+            # 書き込み
+            with open(local_file_path, "w", encoding="utf-8") as f:
+                f.write(markdown)
+            print(f"💾 ローカル（iCloud）に保存しました: {local_file_path}")
+
         # ファイル名に使えない文字を削除
         safe_title = ''.join(c for c in safe_title if c.isalnum() or c in (' ', '-', '_'))
         
@@ -585,6 +607,16 @@ def main():
     GITHUB_TOKEN = os.getenv('GITHUB_TOKEN')
     DATABASE_ID = os.getenv('NOTION_DATABASE_ID')
     REPO_NAME = os.getenv('GITHUB_REPO')  # 例: "username/zettelkasten"
+
+    # 💡 あなたのiCloud上のObsidianフォルダのパスを指定してください
+    ICLOUD_VAULT_PATH = r"C:\Users\progr\iCloudDrive\Obsidian\zettelkasten-vault"
+
+    system = ZettelkastenAutomation(
+        # ...既存の引数...
+        local_vault_path=ICLOUD_VAULT_PATH # 追加
+    )
+    
+    system.run(limit=None, force_reprocess=False)
     
     if not all([NOTION_TOKEN, OPENAI_API_KEY, GITHUB_TOKEN, DATABASE_ID, REPO_NAME]):
         print("❌ 環境変数が設定されていません")
