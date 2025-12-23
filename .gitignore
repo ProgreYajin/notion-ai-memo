@@ -1,0 +1,168 @@
+# ========================================
+# Zettelkasten Automation - .gitignore
+# ========================================
+
+# ==================
+# 🔐 秘密情報（最重要）
+# ==================
+# 絶対にGitHubにアップロードしてはいけないファイル
+.env
+*.env
+.env.local
+.env.*.local
+
+# APIキーや設定ファイル
+secrets.json
+credentials.json
+config.local.py
+
+# ==================
+# 📝 ログとデータ
+# ==================
+# 処理ログ
+logs/
+*.log
+*.json
+*.log.*
+
+# 一時ファイル
+*.tmp
+*.temp
+*.cache
+
+# ローカルテスト用Markdown（GitHubリポジトリに保存するので不要）
+zettelkasten/
+
+# 処理履歴
+processing_log.json
+zettelkasten_processing_log.json
+
+# ==================
+# 🐍 Python関連
+# ==================
+# 仮想環境
+venv/
+env/
+ENV/
+.venv
+.virtualenv
+
+# Pythonキャッシュ
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Pytest
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# pyenv
+.python-version
+
+# ==================
+# 💻 IDE・エディタ
+# ==================
+# VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+
+# PyCharm
+.idea/
+*.iml
+*.iws
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# Vim
+*.swp
+*.swo
+*~
+
+# Emacs
+*~
+\#*\#
+.\#*
+
+# ==================
+# 🖥️ OS関連
+# ==================
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+.Spotlight-V100
+.Trashes
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Linux
+*~
+.directory
+.Trash-*
+
+# ==================
+# 📦 その他
+# ==================
+# バックアップファイル
+*.bak
+*.backup
+*.old
+
+# 圧縮ファイル（必要に応じて）
+*.zip
+*.tar.gz
+*.rar
+
+# データベース（ローカルテスト用）
+*.db
+*.sqlite
+*.sqlite3
+
+# 環境依存ファイル
+.env.backup
+local_settings.py
+.env.example
