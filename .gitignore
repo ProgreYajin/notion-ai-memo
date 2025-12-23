@@ -166,3 +166,7 @@ $RECYCLE.BIN/
 .env.backup
 local_settings.py
 .env.example
+
+.obsidian/workspace.json
+.obsidian/workspace-mobile.json
+.trash/
