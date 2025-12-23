@@ -386,14 +386,22 @@ class ZettelkastenAutomation:
     
     def convert_to_markdown(self, page: Dict, content: str, tags: List[str], 
                            related_pages: List[Dict]) -> str:
-        """Markdown形式に変換"""
+        """Markdown形式に変換（Obsidianプロパティ対応版）"""
         title = self._get_page_title(page)
         created_time = page['created_time'][:10]
         
+        # --- 修正箇所：タグの処理 ---
+        # 1. 各タグから「#」を除去
+        # 2. YAMLのリスト形式（一行ずつ）にする
+        yaml_tags = ""
+        if tags:
+            yaml_tags = "\ntags:\n" + "\n".join([f"  - {tag.replace('#', '')}" for tag in tags])
+        
+        # YAMLフロントマウントの組み立て
+        # titleやdateの後のスペースも確実に確保
         md = f"""---
 title: {title}
-date: {created_time}
-tags: [{', '.join([f'#{tag}' for tag in tags])}]
+date: {created_time}{yaml_tags}
 ---
 
 # {title}
