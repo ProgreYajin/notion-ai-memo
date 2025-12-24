@@ -601,21 +601,32 @@ date: {created_time}{yaml_tags}
 def main():
     """メイン実行関数"""
     
-    # 環境変数から認証情報を取得
     NOTION_TOKEN = os.getenv('NOTION_TOKEN')
     OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
     GITHUB_TOKEN = os.getenv('GITHUB_TOKEN')
     DATABASE_ID = os.getenv('NOTION_DATABASE_ID')
-    REPO_NAME = os.getenv('GITHUB_REPO')  # 例: "username/zettelkasten"
+    REPO_NAME = os.getenv('GITHUB_REPO')
 
-    # 💡 あなたのiCloud上のObsidianフォルダのパスを指定してください
-    ICLOUD_VAULT_PATH = r"C:\Users\progr\iCloudDrive\Obsidian\zettelkasten-vault"
+    # 💡 iCloudを利用しない（Working Copy + GitHubのみ）場合は None にしてください
+    # 利用する場合は正しいパスを指定します
+    ICLOUD_VAULT_PATH = None 
 
+    if not all([NOTION_TOKEN, OPENAI_API_KEY, GITHUB_TOKEN, DATABASE_ID, REPO_NAME]):
+        print("❌ 環境変数が設定されていません。.envファイルを確認してください。")
+        return
+    
+    # システムを初期化（引数を整理しました）
     system = ZettelkastenAutomation(
-        # ...既存の引数...
-        local_vault_path=ICLOUD_VAULT_PATH # 追加
+        notion_token=NOTION_TOKEN,
+        openai_api_key=OPENAI_API_KEY,
+        github_token=GITHUB_TOKEN,
+        database_id=DATABASE_ID,
+        repo_name=REPO_NAME,
+        log_file="zettelkasten_processing_log.json",
+        local_vault_path=ICLOUD_VAULT_PATH
     )
     
+    # 実行
     system.run(limit=None, force_reprocess=False)
     
     if not all([NOTION_TOKEN, OPENAI_API_KEY, GITHUB_TOKEN, DATABASE_ID, REPO_NAME]):

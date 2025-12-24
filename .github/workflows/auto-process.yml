@@ -30,8 +30,8 @@ jobs:
         env:
           NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          MY_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN_PERSONAL }}
+          MY_GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
           NOTION_DATABASE_ID: ${{ secrets.NOTION_DATABASE_ID }}
-          GITHUB_REPO: ${{ github.repository }}
+          GITHUB_REPO: ${{ github.VAULT_REPO_NAME }}
         run: |
           python zettelkasten_automation.py
