@@ -494,7 +494,7 @@ date: {created_time}{yaml_tags}
         )
 
         # --- 修正箇所：保存先フォルダ名の変更 ---
-        target_dir = "zettelkasten-vault" # フォルダ名をここで指定
+        target_dir = "" # フォルダ名をここで指定
 
         # GitHubに保存
         safe_title = analysis['title'].replace('/', '-').replace('\\', '-')[:50]
@@ -521,7 +521,7 @@ date: {created_time}{yaml_tags}
         safe_title = ''.join(c for c in safe_title if c.isalnum() or c in (' ', '-', '_'))
         
         # フォルダ名を zettelkasten から zettelkasten-vault に変更
-        filename = f"{target_dir}/{page['created_time'][:10]}_{safe_title}.md"
+        filename = f"{page['created_time'][:10]}_{safe_title}.md"
         
         self.save_to_github(
             filename,
